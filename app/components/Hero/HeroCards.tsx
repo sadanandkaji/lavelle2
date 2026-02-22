@@ -8,116 +8,64 @@ interface HeroCardsProps {
   poolRef: React.RefObject<HTMLDivElement | null>;
 }
 
-export default function HeroCards({
-  gardenRef,
-  sportsRef,
-  poolRef,
-}: HeroCardsProps) {
+export default function HeroCards({ gardenRef, sportsRef, poolRef }: HeroCardsProps) {
+  const cards = [
+    {
+      ref: gardenRef,
+      img: "/images/garden.jpg",
+      tag: "Botanical Harmony",
+      title: "Verdant Sanctuaries",
+      desc: "Curated landscapes designed for serenity, balance and timeless outdoor living.",
+    },
+    {
+      ref: sportsRef,
+      img: "/images/sports1.jpg",
+      tag: "Dynamic Balance",
+      title: "Private Equilibrium",
+      desc: "Seamless integration of recreation and architectural refinement.",
+    },
+    {
+      ref: poolRef,
+      img: "/images/pool.webp",
+      tag: "Infinite Stillness",
+      title: "Reflecting Horizons",
+      desc: "Water features that blur the line between structure and nature.",
+    },
+  ];
+
   return (
-    <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none pt-24 md:pt-32">
-
-      {/* ================= GARDEN ================= */}
-      <div
-        ref={gardenRef}
-        className="absolute w-[80%] md:w-[380px] aspect-[3/4.5] 
-        overflow-hidden rounded-[30px] 
-        border border-white/10 
-        shadow-2xl 
-        opacity-0 bg-[#0e0e0e]"
-      >
+    <div className="absolute inset-0 z-40 flex items-center justify-center pointer-events-none">
+      {cards.map((card, i) => (
         <div
-          className="card-image absolute inset-0 w-full h-[120%] bg-cover bg-center"
-          style={{ backgroundImage: `url("/images/garden.jpg")` }}
-        />
+          key={i}
+          ref={card.ref}
+          className="absolute w-[85%] max-w-[360px] md:max-w-[380px] aspect-[3/4.5] 
+          overflow-hidden rounded-[30px] 
+          border border-white/10 
+          shadow-2xl 
+          opacity-0 bg-[#0e0e0e] pointer-events-auto"
+        >
+          <div
+            className="card-image absolute inset-0 w-full h-[120%] bg-cover bg-center"
+            style={{ backgroundImage: `url("${card.img}")` }}
+          />
 
-        {/* Softer Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
 
-        {/* Content */}
-        <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10 space-y-4">
-          <div className="w-10 h-[1px] bg-[#B38728]" />
-          
-          <p className="text-[#B38728] text-[10px] tracking-[0.4em] uppercase font-medium">
-            Botanical Harmony
-          </p>
-
-          <h4 className="text-white text-2xl md:text-3xl font-light italic leading-tight">
-            Verdant Sanctuaries
-          </h4>
-
-          <p className="text-white/60 text-sm leading-relaxed">
-            Curated landscapes designed for serenity, balance and timeless outdoor living.
-          </p>
+          <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10 space-y-4">
+            <div className="w-10 h-[1px] bg-[#B38728]" />
+            <p className="text-[#B38728] text-[10px] tracking-[0.4em] uppercase font-bold">
+              {card.tag}
+            </p>
+            <h4 className="text-white text-2xl md:text-3xl font-light italic leading-tight">
+              {card.title}
+            </h4>
+            <p className="text-white/60 text-sm leading-relaxed line-clamp-3">
+              {card.desc}
+            </p>
+          </div>
         </div>
-      </div>
-
-      {/* ================= SPORTS ================= */}
-      <div
-        ref={sportsRef}
-        className="absolute w-[80%] md:w-[380px] aspect-[3/4.5] 
-        overflow-hidden rounded-[30px] 
-        border border-white/10 
-        shadow-2xl 
-        opacity-0 bg-[#0e0e0e]"
-      >
-        <div
-          className="card-image absolute inset-0 w-full h-[120%] bg-cover bg-center"
-          style={{ backgroundImage: `url("/images/sports1.jpg")` }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-
-        <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10 space-y-4">
-          <div className="w-10 h-[1px] bg-[#B38728]" />
-
-          <p className="text-[#B38728] text-[10px] tracking-[0.4em] uppercase font-medium">
-            Dynamic Balance
-          </p>
-
-          <h4 className="text-white text-2xl md:text-3xl font-light italic leading-tight">
-            Private Equilibrium
-          </h4>
-
-          <p className="text-white/60 text-sm leading-relaxed">
-            Seamless integration of recreation and architectural refinement.
-          </p>
-
-
-        </div>
-      </div>
-
-      {/* ================= POOL ================= */}
-      <div
-        ref={poolRef}
-        className="absolute w-[80%] md:w-[380px] aspect-[3/4.5] 
-        overflow-hidden rounded-[30px] 
-        border border-white/10 
-        shadow-2xl 
-        opacity-0 bg-[#0e0e0e]"
-      >
-        <div
-          className="card-image absolute inset-0 w-full h-[120%] bg-cover bg-center"
-          style={{ backgroundImage: `url("/images/pool.webp")` }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-
-        <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10 space-y-4">
-          <div className="w-10 h-[1px] bg-[#B38728]" />
-
-          <p className="text-[#B38728] text-[10px] tracking-[0.4em] uppercase font-medium">
-            Infinite Stillness
-          </p>
-
-          <h4 className="text-white text-2xl md:text-3xl font-light italic leading-tight">
-            Reflecting Horizons
-          </h4>
-
-          <p className="text-white/60 text-sm leading-relaxed">
-            Water features that blur the line between structure and nature.
-          </p>
-
-        </div>
-      </div>
-
+      ))}
     </div>
   );
 }
