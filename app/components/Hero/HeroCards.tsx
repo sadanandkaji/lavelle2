@@ -15,7 +15,7 @@ export default function HeroCards({ gardenRef, sportsRef, poolRef }: HeroCardsPr
       img: "/images/garden.jpg",
       tag: "Botanical Harmony",
       title: "Verdant Sanctuaries",
-      desc: "Curated landscapes designed for serenity, balance and timeless outdoor living.",
+      desc: "Curated landscapes designed for serenity and timeless outdoor living.",
     },
     {
       ref: sportsRef,
@@ -34,41 +34,26 @@ export default function HeroCards({ gardenRef, sportsRef, poolRef }: HeroCardsPr
   ];
 
   return (
-    <div className="absolute inset-0 z-40 flex items-center justify-center pointer-events-none">
+    <div className="absolute inset-0 z-40 flex items-center justify-center pointer-events-none px-4">
       {cards.map((card, i) => (
         <div
           key={i}
           ref={card.ref}
-          className="absolute w-[88%] max-w-[350px] md:max-w-[400px] aspect-[3/4.6] 
-          overflow-hidden rounded-[40px] 
-          border border-white/20 
-          shadow-[0_20px_50px_rgba(0,0,0,0.5)] 
-          opacity-0 bg-[#0e0e0e] pointer-events-auto"
+          className="absolute w-full max-w-[340px] md:max-w-[400px] aspect-[3/4.5] 
+          overflow-hidden rounded-[30px] 
+          border border-white/10 
+          shadow-2xl opacity-0 bg-[#0e0e0e]"
         >
-          {/* Parallax Image Effect */}
           <div
-            className="card-image absolute inset-0 w-full h-[120%] bg-cover bg-center"
+            className="absolute inset-0 w-full h-full bg-cover bg-center"
             style={{ backgroundImage: `url("${card.img}")` }}
           />
-
-          {/* Luxury Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
-
-          {/* Content Box */}
-          <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12 space-y-4">
-            <div className="w-12 h-[1.5px] bg-[#B38728]" />
-            
-            <p className="text-[#B38728] text-[10px] tracking-[0.5em] uppercase font-black">
-              {card.tag}
-            </p>
-
-            <h4 className="text-white text-2xl md:text-4xl font-light italic leading-tight">
-              {card.title}
-            </h4>
-
-            <p className="text-white/50 text-xs md:text-sm leading-relaxed line-clamp-3 font-medium">
-              {card.desc}
-            </p>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10 space-y-4">
+            <div className="w-10 h-[1px] bg-[#B38728]" />
+            <p className="text-[#B38728] text-[10px] tracking-[0.4em] uppercase font-bold">{card.tag}</p>
+            <h4 className="text-white text-2xl md:text-3xl font-light italic leading-tight">{card.title}</h4>
+            <p className="text-white/60 text-xs md:text-sm leading-relaxed line-clamp-3">{card.desc}</p>
           </div>
         </div>
       ))}
