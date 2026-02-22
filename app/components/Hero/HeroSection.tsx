@@ -38,93 +38,81 @@ export default function HeroSection() {
         scrollTrigger: {
           trigger: heroRef.current,
           start: "top top",
-          // REDUCED: From 1200% to 700% for a much faster feel on mobile
-          end: "+=700%", 
-          // REDUCED: 1.0 makes it follow the finger more closely than 1.5
-          scrub: 1, 
+          end: "+=900%", // Slightly longer to allow for manual "dwelling" on cards
+          scrub: 2,      // High scrub value creates that "smooth glide" without jumping
           pin: true,
-          // ADDED: Snapping ensures cards don't get stuck halfway
-          snap: {
-            snapTo: "labels",
-            duration: { min: 0.2, max: 0.6 },
-            delay: 0.1,
-            ease: "power2.inOut"
-          }
+          anticipatePin: 1,
         },
       });
 
-      // Phase 1 – Collapse Video
-      tl.addLabel("start");
+      // --- PHASE 1: Video Collapse ---
       if (mediaInnerRef.current) {
         tl.to(mediaInnerRef.current, {
           clipPath: "circle(0% at 50% 50%)",
-          ease: "power2.inOut",
+          ease: "none",
         }, 0);
       }
 
       if (goldBgRef.current) {
-        tl.to(goldBgRef.current, { opacity: 0.4, scale: 1.1 }, 0);
+        tl.to(goldBgRef.current, { opacity: 0.4, scale: 1.1, ease: "none" }, 0);
       }
 
       if (textRef.current) {
-        tl.to(textRef.current, { opacity: 0, y: -50, filter: "blur(20px)" }, 0);
+        tl.to(textRef.current, { opacity: 0, y: -50, filter: "blur(20px)", ease: "none" }, 0);
       }
 
-      // Phase 2 – Cards Animation
-      const cards = [
-        { ref: gardenCardRef, rot: -2, label: "garden" },
-        { ref: sportsCardRef, rot: 2, label: "sports" },
-        { ref: poolCardRef, rot: -1, label: "pool" },
-      ];
+      // --- PHASE 2: Cards Sequence ---
+      const cardRefs = [gardenCardRef, sportsCardRef, poolCardRef];
+      const rotations = [-3, 3, -1.5];
 
-      cards.forEach((card, i) => {
-        if (!card.ref.current) return;
-        const innerImg = card.ref.current.querySelector<HTMLDivElement>(".card-image");
-
-        tl.addLabel(card.label);
+      cardRefs.forEach((ref, i) => {
+        if (!ref.current) return;
+        const innerImg = ref.current.querySelector<HTMLDivElement>(".card-image");
 
         // Entrance
-        tl.fromTo(card.ref.current,
-          { y: "100%", opacity: 0, rotate: card.rot, scale: 0.9 },
-          { y: "0%", opacity: 1, rotate: 0, scale: 1, duration: 1, ease: "power2.out" },
-          ">-0.2"
+        tl.fromTo(ref.current,
+          { y: "120%", opacity: 0, rotate: rotations[i], scale: 0.8 },
+          { y: "0%", opacity: 1, rotate: 0, scale: 1, duration: 2, ease: "power2.out" },
+          "-=0.5" // Overlap slightly with previous animation
         );
 
-        if (innerImg) tl.to(innerImg, { y: "-10%", duration: 1 }, "<");
+        if (innerImg) {
+          tl.to(innerImg, { y: "-15%", duration: 2, ease: "none" }, "<");
+        }
 
-        // Exit (Except for the last card if you want it to transition to final content)
-        tl.to(card.ref.current, {
-          y: "-100%",
+        // Exit (Last card stays a bit longer)
+        tl.to(ref.current, {
+          y: "-120%",
           opacity: 0,
-          scale: 1.05,
-          filter: "blur(10px)",
-          duration: 0.8,
-        }, "+=0.5");
+          scale: 1.1,
+          filter: "blur(15px)",
+          duration: 1.5,
+          ease: "power2.in"
+        }, "+=1"); // The "1" here is the pause time where the card is still
       });
 
-      // Phase 3 – Gold Text & Final Content
-      tl.addLabel("final");
+      // --- PHASE 3: Gold Text & Final Fade ---
       if (goldBgRef.current) {
-        tl.to(goldBgRef.current, { opacity: 0.8, scale: 1 });
+        tl.to(goldBgRef.current, { opacity: 0.8, scale: 1, duration: 1 });
       }
 
       if (goldTextRef.current) {
         tl.fromTo(goldTextRef.current,
-          { opacity: 0, y: 30, filter: "blur(15px)" },
-          { opacity: 1, y: 0, filter: "blur(0px)", duration: 1 },
+          { opacity: 0, y: 50, filter: "blur(15px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 2 },
           ">"
         ).to(goldTextRef.current, {
           opacity: 0,
-          scale: 0.95,
+          scale: 0.9,
           filter: "blur(20px)",
-          duration: 0.8
-        }, "+=0.5");
+          duration: 1.5
+        }, "+=1");
       }
 
       if (contentRef.current) {
         tl.fromTo(contentRef.current,
           { y: "100vh", opacity: 0 },
-          { y: "0vh", opacity: 1, duration: 1.5 },
+          { y: "0vh", opacity: 1, duration: 2, ease: "power3.out" },
           ">"
         );
       }

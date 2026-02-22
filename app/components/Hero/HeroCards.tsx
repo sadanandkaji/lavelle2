@@ -39,28 +39,34 @@ export default function HeroCards({ gardenRef, sportsRef, poolRef }: HeroCardsPr
         <div
           key={i}
           ref={card.ref}
-          className="absolute w-[85%] max-w-[360px] md:max-w-[380px] aspect-[3/4.5] 
-          overflow-hidden rounded-[30px] 
-          border border-white/10 
-          shadow-2xl 
+          className="absolute w-[88%] max-w-[350px] md:max-w-[400px] aspect-[3/4.6] 
+          overflow-hidden rounded-[40px] 
+          border border-white/20 
+          shadow-[0_20px_50px_rgba(0,0,0,0.5)] 
           opacity-0 bg-[#0e0e0e] pointer-events-auto"
         >
+          {/* Parallax Image Effect */}
           <div
             className="card-image absolute inset-0 w-full h-[120%] bg-cover bg-center"
             style={{ backgroundImage: `url("${card.img}")` }}
           />
 
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+          {/* Luxury Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
 
-          <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10 space-y-4">
-            <div className="w-10 h-[1px] bg-[#B38728]" />
-            <p className="text-[#B38728] text-[10px] tracking-[0.4em] uppercase font-bold">
+          {/* Content Box */}
+          <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12 space-y-4">
+            <div className="w-12 h-[1.5px] bg-[#B38728]" />
+            
+            <p className="text-[#B38728] text-[10px] tracking-[0.5em] uppercase font-black">
               {card.tag}
             </p>
-            <h4 className="text-white text-2xl md:text-3xl font-light italic leading-tight">
+
+            <h4 className="text-white text-2xl md:text-4xl font-light italic leading-tight">
               {card.title}
             </h4>
-            <p className="text-white/60 text-sm leading-relaxed line-clamp-3">
+
+            <p className="text-white/50 text-xs md:text-sm leading-relaxed line-clamp-3 font-medium">
               {card.desc}
             </p>
           </div>
