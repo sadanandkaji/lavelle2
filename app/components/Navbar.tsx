@@ -59,8 +59,8 @@ export default function Navbar() {
         animate={{ y: 0 }}
         className={`fixed top-0 left-0 w-full z-[100] transition-all duration-700 flex items-center px-8 md:px-16
           ${useDarkTheme 
-            ? "h-16 bg-white/90 backdrop-blur-md border-b border-neutral-100 shadow-sm" 
-            : "h-24 bg-transparent border-b border-white/10"
+            ? "h-16 bg-white/95 backdrop-blur-md border-b-2 border-white shadow-sm" 
+            : "h-24 bg-transparent border-b-2 border-white/40"
           }`}
       >
         <div className="max-w-[1800px] mx-auto w-full flex items-center justify-between">
@@ -68,12 +68,12 @@ export default function Navbar() {
             <span className={`text-2xl font-serif font-black tracking-tighter transition-colors duration-500 ${useDarkTheme ? "text-black" : "text-white"}`}>
               LAVELLE
             </span>
-            <span className={`text-[8px] tracking-[0.4em] uppercase font-bold transition-colors duration-500 ${useDarkTheme ? "text-[#B38728]" : "text-white/40"}`}>
+            <span className={`text-[8px] tracking-[0.4em] uppercase font-bold transition-colors duration-500 ${useDarkTheme ? "text-[#B38728]" : "text-white"}`}>
               Ventures
             </span>
           </Link>
 
-          {/* Desktop Links - Centralized */}
+          {/* Desktop Links - Hidden on Mobile */}
           <nav className="hidden md:flex items-center gap-10">
             {["Home", "About", "Contact"].map((item) => {
               const href = item === "Home" ? "/" : `/${item.toLowerCase()}`;
@@ -83,11 +83,11 @@ export default function Navbar() {
                   <span className={`text-[10px] tracking-[0.25em] uppercase font-black transition-colors ${
                     isActive 
                       ? (useDarkTheme ? "text-[#B38728]" : "text-white") 
-                      : (useDarkTheme ? "text-neutral-400 hover:text-black" : "text-white/60 hover:text-white")
+                      : (useDarkTheme ? "text-neutral-400 hover:text-black" : "text-white/70 hover:text-white")
                   }`}>
                     {item}
                   </span>
-                  <span className={`absolute bottom-0 left-0 h-[1px] bg-[#B38728] transition-all duration-300 ${isActive ? "w-full" : "w-0 group-hover:w-full"}`} />
+                  <span className={`absolute bottom-0 left-0 h-[2px] bg-white transition-all duration-300 ${isActive ? "w-full" : "w-0 group-hover:w-full"}`} />
                 </Link>
               );
             })}
@@ -99,9 +99,9 @@ export default function Navbar() {
             className={`flex items-center gap-4 group transition-all ${useDarkTheme ? "text-black" : "text-white"}`}
           >
             <span className="text-[9px] tracking-[0.3em] uppercase font-black hidden lg:block">Estate Map</span>
-            <div className={`w-10 h-10 rounded-full flex flex-col items-center justify-center gap-1 transition-all duration-500 group-hover:scale-110 ${useDarkTheme ? "bg-black" : "bg-white"}`}>
-              <div className={`w-4 h-[1px] ${useDarkTheme ? "bg-white" : "bg-black"}`} />
-              <div className={`w-4 h-[1px] ${useDarkTheme ? "bg-white" : "bg-black"}`} />
+            <div className={`w-10 h-10 rounded-full flex flex-col items-center justify-center gap-1.5 transition-all duration-500 group-hover:scale-110 shadow-md ${useDarkTheme ? "bg-black" : "bg-white"}`}>
+              <div className={`w-5 h-[2px] ${useDarkTheme ? "bg-white" : "bg-black"}`} />
+              <div className={`w-5 h-[2px] ${useDarkTheme ? "bg-white" : "bg-black"}`} />
             </div>
           </button>
         </div>
@@ -114,7 +114,7 @@ export default function Navbar() {
             <motion.div 
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               onClick={() => { setMobileMenuOpen(false); setHoveredItem(null); setExpandedMobileItem(null); }}
-              className="fixed inset-0 bg-black/60 backdrop-blur-md z-[150]"
+              className="fixed inset-0 bg-black/70 backdrop-blur-md z-[150]"
             />
 
             <motion.div
@@ -122,10 +122,10 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-full max-w-[400px] bg-white z-[160] shadow-2xl flex flex-col"
+              className="fixed top-0 right-0 h-full w-full max-w-[400px] bg-white z-[160] shadow-2xl flex flex-col border-l-2 border-white"
             >
               {/* Sidebar Header */}
-              <div className="p-8 flex justify-between items-center border-b border-neutral-50">
+              <div className="p-8 flex justify-between items-center border-b-2 border-neutral-100">
                 <div className="flex flex-col">
                   <span className="text-xl font-serif font-black tracking-tighter text-black uppercase leading-none">
                     Discovery
@@ -134,7 +134,7 @@ export default function Navbar() {
                 </div>
                 <button 
                   onClick={() => { setMobileMenuOpen(false); setHoveredItem(null); setExpandedMobileItem(null); }}
-                  className="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center text-black hover:bg-black hover:text-white transition-all"
+                  className="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center text-black hover:bg-black hover:text-white transition-all border border-white"
                 >
                   ✕
                 </button>
@@ -142,19 +142,20 @@ export default function Navbar() {
 
               <div className="flex-1 overflow-y-auto no-scrollbar">
                 
-                {/* 1. TOP LINKS - ONLY VISIBLE ON MOBILE */}
-                <div className="md:hidden bg-neutral-50 py-2 border-b border-neutral-100">
+                {/* 1. MOBILE ONLY MAIN LINKS (Home, About, Contact) */}
+                <div className="bg-neutral-50 py-2 border-b-2 border-neutral-100">
                   {["Home", "About", "Contact"].map((item) => {
                     const href = item === "Home" ? "/" : `/${item.toLowerCase()}`;
+                    const isActive = pathname === href;
                     return (
                       <Link 
                         key={item} 
                         href={href}
                         onClick={() => setMobileMenuOpen(false)}
-                        className="px-8 py-4 flex items-center group"
+                        className="px-8 py-5 flex items-center group border-b border-white last:border-0"
                       >
-                        <span className={`text-[10px] tracking-[0.3em] uppercase font-black ${
-                          pathname === href ? "text-[#B38728]" : "text-neutral-500 group-hover:text-black"
+                        <span className={`text-[11px] tracking-[0.3em] uppercase font-black ${
+                          isActive ? "text-[#B38728]" : "text-neutral-500 group-hover:text-black"
                         }`}>
                           {item}
                         </span>
@@ -180,7 +181,6 @@ export default function Navbar() {
                             {item.title}
                             </span>
                         </div>
-                        
                         {item.subItems && (
                           <motion.span 
                             animate={{ rotate: expandedMobileItem === item.title ? 180 : 0 }}
@@ -199,7 +199,7 @@ export default function Navbar() {
                             exit={{ height: 0, opacity: 0 }}
                             className="overflow-hidden bg-[#FBFBFA]"
                           >
-                            <div className="px-12 py-6 flex flex-col gap-5 border-l-2 border-[#B38728]/20 ml-8 my-2">
+                            <div className="px-12 py-6 flex flex-col gap-5 border-l-2 border-neutral-200 ml-8 my-2">
                               {item.subItems.map((sub, idx) => (
                                 <Link 
                                   key={idx} 
@@ -207,7 +207,7 @@ export default function Navbar() {
                                   onClick={() => setMobileMenuOpen(false)}
                                   className="text-[10px] tracking-widest text-neutral-500 hover:text-[#B38728] uppercase font-bold transition-colors flex items-center gap-3"
                                 >
-                                  <div className="w-1 h-1 rounded-full bg-[#B38728]" />
+                                  <div className="w-1.5 h-1.5 rounded-full bg-[#B38728]" />
                                   {sub}
                                 </Link>
                               ))}
@@ -221,39 +221,11 @@ export default function Navbar() {
               </div>
 
               {/* Sidebar Footer */}
-              <div className="p-8 bg-neutral-900 text-white">
+              <div className="p-8 bg-neutral-900 text-white border-t border-white/20">
                  <p className="text-[7px] tracking-[0.4em] uppercase text-white/40 mb-3 font-bold">Inquiries</p>
                  <p className="text-xs font-serif italic text-[#B38728]">lavelleventure@gmail.com</p>
               </div>
             </motion.div>
-
-            {/* --- DESKTOP ONLY FLYOUT (Discovery Panel) --- */}
-            <AnimatePresence>
-              {hoveredItem && activeSubItems && (
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                  className="fixed top-0 right-[400px] h-full w-[280px] bg-neutral-50 z-[155] shadow-xl hidden lg:flex flex-col justify-center p-12 border-r border-neutral-100"
-                >
-                  <span className="text-[8px] tracking-[0.4em] text-[#B38728] font-bold uppercase mb-4">Discovery</span>
-                  <h3 className="text-2xl font-serif italic text-neutral-900 mb-10 leading-tight border-b border-neutral-200 pb-4">{hoveredItem}</h3>
-                  <div className="flex flex-col gap-6">
-                    {activeSubItems.map((sub, idx) => (
-                      <Link 
-                        key={idx} 
-                        href={`/${sub.toLowerCase().replace(/ /g, '-')}`}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="text-[10px] text-neutral-500 hover:text-black transition-colors block uppercase tracking-[0.2em] font-black group flex items-center gap-3"
-                      >
-                        <span className="w-0 group-hover:w-4 h-[1px] bg-[#B38728] transition-all duration-300" />
-                        {sub}
-                      </Link>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
           </>
         )}
       </AnimatePresence>
