@@ -164,7 +164,7 @@ export default function CoconutArecaPage() {
       {/* --- NAVIGATION FOOTER --- */}
       <section className="py-32 text-center border-t border-neutral-100">
         <Link 
-          href="/kitchen-garden/fruit-orchards"
+          href="/fruit-orchards"
           className="inline-flex flex-col items-center group"
         >
           <motion.div

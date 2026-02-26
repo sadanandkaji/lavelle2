@@ -13,7 +13,6 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
 
-  // Updated logic: Check if current page is contact OR about
   const isStaticWhitePage = pathname === "/contact" || pathname === "/about";
 
   useEffect(() => {
@@ -22,7 +21,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Determine theme colors based on scroll OR specific static pages
   const useDarkTheme = isScrolled || isStaticWhitePage;
 
   const navigationData = [
@@ -59,149 +57,196 @@ export default function Navbar() {
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 flex items-center px-6 md:px-12
-          ${useDarkTheme ? "h-14 bg-white shadow-sm" : "h-20 bg-transparent"}`}
+        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-700 flex items-center px-8 md:px-16
+          ${useDarkTheme 
+            ? "h-16 bg-white/90 backdrop-blur-md border-b border-neutral-100 shadow-sm" 
+            : "h-24 bg-transparent border-b border-white/10"
+          }`}
       >
         <div className="max-w-[1800px] mx-auto w-full flex items-center justify-between">
-          <Link href="/" className="flex flex-col">
-            <span className={`text-xl font-serif font-black tracking-tighter transition-colors ${useDarkTheme ? "text-black" : "text-white"}`}>
+          <Link href="/" className="flex flex-col group">
+            <span className={`text-2xl font-serif font-black tracking-tighter transition-colors duration-500 ${useDarkTheme ? "text-black" : "text-white"}`}>
               LAVELLE
+            </span>
+            <span className={`text-[8px] tracking-[0.4em] uppercase font-bold transition-colors duration-500 ${useDarkTheme ? "text-[#B38728]" : "text-white/40"}`}>
+              Ventures
             </span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-8">
+          {/* Desktop Links - Centralized */}
+          <nav className="hidden md:flex items-center gap-10">
             {["Home", "About", "Contact"].map((item) => {
               const href = item === "Home" ? "/" : `/${item.toLowerCase()}`;
+              const isActive = pathname === href;
               return (
-                <Link key={item} href={href} className="relative group">
-                  <span className={`text-[10px] tracking-[0.25em] uppercase font-bold transition-colors ${
-                    pathname === href 
-                      ? (useDarkTheme ? "text-black border-b border-black" : "text-white border-b border-white") 
+                <Link key={item} href={href} className="relative group py-2">
+                  <span className={`text-[10px] tracking-[0.25em] uppercase font-black transition-colors ${
+                    isActive 
+                      ? (useDarkTheme ? "text-[#B38728]" : "text-white") 
                       : (useDarkTheme ? "text-neutral-400 hover:text-black" : "text-white/60 hover:text-white")
                   }`}>
                     {item}
                   </span>
+                  <span className={`absolute bottom-0 left-0 h-[1px] bg-[#B38728] transition-all duration-300 ${isActive ? "w-full" : "w-0 group-hover:w-full"}`} />
                 </Link>
               );
             })}
           </nav>
 
+          {/* Menu Trigger */}
           <button 
             onClick={() => setMobileMenuOpen(true)}
-            className={`flex items-center gap-3 group transition-all ${useDarkTheme ? "text-black" : "text-white"}`}
+            className={`flex items-center gap-4 group transition-all ${useDarkTheme ? "text-black" : "text-white"}`}
           >
-            <span className="text-[9px] tracking-[0.2em] uppercase font-bold hidden sm:block">Estate Map</span>
-            <div className={`w-8 h-8 rounded-full flex flex-col items-center justify-center gap-1 transition-colors ${useDarkTheme ? "bg-black" : "bg-white"}`}>
-              <div className={`w-3 h-[1px] ${useDarkTheme ? "bg-white" : "bg-black"}`} />
-              <div className={`w-3 h-[1px] ${useDarkTheme ? "bg-white" : "bg-black"}`} />
+            <span className="text-[9px] tracking-[0.3em] uppercase font-black hidden lg:block">Estate Map</span>
+            <div className={`w-10 h-10 rounded-full flex flex-col items-center justify-center gap-1 transition-all duration-500 group-hover:scale-110 ${useDarkTheme ? "bg-black" : "bg-white"}`}>
+              <div className={`w-4 h-[1px] ${useDarkTheme ? "bg-white" : "bg-black"}`} />
+              <div className={`w-4 h-[1px] ${useDarkTheme ? "bg-white" : "bg-black"}`} />
             </div>
           </button>
         </div>
       </motion.header>
 
-      {/* --- SIDEBAR & FLYOUTS (Remains same as your provided code) --- */}
+      {/* --- SIDEBAR MENU --- */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
             <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               onClick={() => { setMobileMenuOpen(false); setHoveredItem(null); setExpandedMobileItem(null); }}
-              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[150]"
+              className="fixed inset-0 bg-black/60 backdrop-blur-md z-[150]"
             />
 
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className="fixed top-0 right-0 h-full w-[300px] md:w-[380px] bg-white z-[160] shadow-2xl flex flex-col"
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 h-full w-full max-w-[400px] bg-white z-[160] shadow-2xl flex flex-col"
             >
-              <div className="p-6 border-b border-white/10 flex justify-between items-center bg-[#111111]">
-                <span className="text-lg font-serif font-black tracking-tighter text-white uppercase">
-                  Eshwari Farms
-                </span>
+              {/* Sidebar Header */}
+              <div className="p-8 flex justify-between items-center border-b border-neutral-50">
+                <div className="flex flex-col">
+                  <span className="text-xl font-serif font-black tracking-tighter text-black uppercase leading-none">
+                    Discovery
+                  </span>
+                  <span className="text-[9px] tracking-[0.3em] uppercase text-[#B38728] font-bold mt-1">Estate Map</span>
+                </div>
                 <button 
                   onClick={() => { setMobileMenuOpen(false); setHoveredItem(null); setExpandedMobileItem(null); }}
-                  className="text-[10px] uppercase tracking-[0.2em] font-bold text-white/60 hover:text-white flex items-center gap-2"
+                  className="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center text-black hover:bg-black hover:text-white transition-all"
                 >
-                  <span className="text-lg leading-none">×</span> Close
+                  ✕
                 </button>
               </div>
 
-              <div className="flex-1 overflow-y-auto py-4 no-scrollbar">
-                {navigationData.map((item) => (
-                  <div key={item.title} className="flex flex-col border-b border-neutral-50 last:border-0">
-                    <div 
-                      onMouseEnter={() => setHoveredItem(item.title)}
-                      onClick={() => handleItemClick(item)}
-                      className="px-8 py-4 flex items-center justify-between group cursor-pointer hover:bg-[#F6F5F2] transition-all"
-                    >
-                      <span className={`text-[10px] md:text-[11px] font-bold tracking-[0.2em] uppercase transition-colors ${
-                        expandedMobileItem === item.title ? "text-[#B38728]" : "text-neutral-800 group-hover:text-[#B38728]"
-                      }`}>
-                        {item.title}
-                      </span>
-                      
-                      {item.subItems && (
-                        <motion.span 
-                          animate={{ rotate: expandedMobileItem === item.title ? 180 : 0 }}
-                          className="text-[10px] text-neutral-400 lg:hidden"
-                        >
-                          ▼
-                        </motion.span>
-                      )}
-                    </div>
+              <div className="flex-1 overflow-y-auto no-scrollbar">
+                
+                {/* 1. TOP LINKS - ONLY VISIBLE ON MOBILE */}
+                <div className="md:hidden bg-neutral-50 py-2 border-b border-neutral-100">
+                  {["Home", "About", "Contact"].map((item) => {
+                    const href = item === "Home" ? "/" : `/${item.toLowerCase()}`;
+                    return (
+                      <Link 
+                        key={item} 
+                        href={href}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="px-8 py-4 flex items-center group"
+                      >
+                        <span className={`text-[10px] tracking-[0.3em] uppercase font-black ${
+                          pathname === href ? "text-[#B38728]" : "text-neutral-500 group-hover:text-black"
+                        }`}>
+                          {item}
+                        </span>
+                      </Link>
+                    );
+                  })}
+                </div>
 
-                    <AnimatePresence>
-                      {expandedMobileItem === item.title && item.subItems && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          className="overflow-hidden bg-[#F9F8F6] lg:hidden"
-                        >
-                          <div className="px-10 py-4 flex flex-col gap-4 border-l-2 border-[#B38728]/20 ml-8 my-2">
-                            {item.subItems.map((sub, idx) => (
-                              <Link 
-                                key={idx} 
-                                href={`/${sub.toLowerCase().replace(/ /g, '-')}`} 
-                                onClick={() => setMobileMenuOpen(false)}
-                                className="text-[10px] tracking-widest text-neutral-500 hover:text-[#B38728] uppercase transition-colors"
-                              >
-                                {sub}
-                              </Link>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ))}
+                {/* 2. ESTATE NAVIGATION ITEMS */}
+                <div className="py-4">
+                  {navigationData.map((item, idx) => (
+                    <div key={item.title} className="flex flex-col">
+                      <div 
+                        onMouseEnter={() => setHoveredItem(item.title)}
+                        onClick={() => handleItemClick(item)}
+                        className="px-8 py-5 flex items-center justify-between group cursor-pointer hover:bg-neutral-50 transition-all border-b border-neutral-50 last:border-0"
+                      >
+                        <div className="flex items-center gap-4">
+                            <span className="text-[10px] font-serif italic text-neutral-300 group-hover:text-[#B38728]">0{idx + 1}</span>
+                            <span className={`text-[11px] font-black tracking-[0.2em] uppercase transition-colors ${
+                            expandedMobileItem === item.title ? "text-[#B38728]" : "text-neutral-800 group-hover:text-[#B38728]"
+                            }`}>
+                            {item.title}
+                            </span>
+                        </div>
+                        
+                        {item.subItems && (
+                          <motion.span 
+                            animate={{ rotate: expandedMobileItem === item.title ? 180 : 0 }}
+                            className="text-[8px] text-neutral-400"
+                          >
+                            ▼
+                          </motion.span>
+                        )}
+                      </div>
+
+                      <AnimatePresence>
+                        {expandedMobileItem === item.title && item.subItems && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            className="overflow-hidden bg-[#FBFBFA]"
+                          >
+                            <div className="px-12 py-6 flex flex-col gap-5 border-l-2 border-[#B38728]/20 ml-8 my-2">
+                              {item.subItems.map((sub, idx) => (
+                                <Link 
+                                  key={idx} 
+                                  href={`/${sub.toLowerCase().replace(/ /g, '-')}`} 
+                                  onClick={() => setMobileMenuOpen(false)}
+                                  className="text-[10px] tracking-widest text-neutral-500 hover:text-[#B38728] uppercase font-bold transition-colors flex items-center gap-3"
+                                >
+                                  <div className="w-1 h-1 rounded-full bg-[#B38728]" />
+                                  {sub}
+                                </Link>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Sidebar Footer */}
+              <div className="p-8 bg-neutral-900 text-white">
+                 <p className="text-[7px] tracking-[0.4em] uppercase text-white/40 mb-3 font-bold">Inquiries</p>
+                 <p className="text-xs font-serif italic text-[#B38728]">lavelleventure@gmail.com</p>
               </div>
             </motion.div>
 
-            {/* --- DESKTOP ONLY FLYOUT --- */}
+            {/* --- DESKTOP ONLY FLYOUT (Discovery Panel) --- */}
             <AnimatePresence>
               {hoveredItem && activeSubItems && (
                 <motion.div
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
-                  className="fixed top-0 right-[380px] h-full w-[260px] bg-[#F6F5F2] z-[155] shadow-xl hidden lg:flex flex-col justify-center p-10 border-r border-neutral-200"
+                  className="fixed top-0 right-[400px] h-full w-[280px] bg-neutral-50 z-[155] shadow-xl hidden lg:flex flex-col justify-center p-12 border-r border-neutral-100"
                 >
-                  <span className="text-[8px] tracking-[0.4em] text-[#B38728] font-bold uppercase mb-3">Discovery</span>
-                  <h3 className="text-xl font-serif italic text-neutral-900 mb-8">{hoveredItem}</h3>
-                  <div className="flex flex-col gap-5 relative">
-                    <div className="absolute left-0 top-0 w-[1px] h-full bg-neutral-200" />
+                  <span className="text-[8px] tracking-[0.4em] text-[#B38728] font-bold uppercase mb-4">Discovery</span>
+                  <h3 className="text-2xl font-serif italic text-neutral-900 mb-10 leading-tight border-b border-neutral-200 pb-4">{hoveredItem}</h3>
+                  <div className="flex flex-col gap-6">
                     {activeSubItems.map((sub, idx) => (
                       <Link 
                         key={idx} 
                         href={`/${sub.toLowerCase().replace(/ /g, '-')}`}
                         onClick={() => setMobileMenuOpen(false)}
-                        className="pl-5 text-[11px] text-neutral-500 hover:text-black transition-colors block uppercase tracking-wider"
+                        className="text-[10px] text-neutral-500 hover:text-black transition-colors block uppercase tracking-[0.2em] font-black group flex items-center gap-3"
                       >
+                        <span className="w-0 group-hover:w-4 h-[1px] bg-[#B38728] transition-all duration-300" />
                         {sub}
                       </Link>
                     ))}

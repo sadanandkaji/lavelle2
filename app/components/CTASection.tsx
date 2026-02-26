@@ -60,7 +60,7 @@ export default function CTASection() {
           Begin Your Journey
         </h3>
         <p className="mt-2 text-black/60 italic text-sm md:text-base">
-          Let us curate your signature residence.
+          Let us know what you are looking for.
         </p>
       </div>
 

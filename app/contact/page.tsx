@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import ReCAPTCHA from "react-google-recaptcha";
 
@@ -62,7 +62,7 @@ export default function ContactPage() {
           className="flex flex-col justify-between py-4"
         >
           <div>
-            <h1 className="text-2xl md:text-2xl font-light tracking-tighter text-black uppercase leading-tight">
+            <h1 className="text-3xl md:text-4xl font-light tracking-tighter text-black uppercase leading-tight">
               Begin Your <br /> 
               <span className="italic">Signature</span> Journey
             </h1>
@@ -73,33 +73,44 @@ export default function ContactPage() {
           </div>
 
           <div className="mt-20 space-y-12">
-            {/* EMAIL SECTION - DARK & BOLD */}
+            {/* EMAIL SECTION */}
             <div>
               <p className="text-[10px] tracking-[0.3em] uppercase text-[#B38728] font-bold mb-2">Inquiries</p>
               <a 
-                href="mailto:support@Lavelleventure.com" 
+                href="mailto:lavelleventure@gmail.com" 
                 className="text-2xl md:text-xl font-bold text-black hover:text-[#B38728] transition-colors duration-300 break-words"
               >
-                support@Lavelleventure.com
+                lavelleventure@gmail.com
               </a>
             </div>
 
             {/* PHONE SECTION */}
             <div>
               <p className="text-[10px] tracking-[0.3em] uppercase text-[#B38728] font-bold mb-2">Connect</p>
-              <p className="text-xl font-bold text-black transition-colors">
+              <a 
+                href="tel:+919187569958"
+                className="text-xl font-bold text-black hover:text-[#B38728] transition-colors"
+              >
                 +91 91875 69958
-              </p>
+              </a>
             </div>
 
-            {/* OFFICE SECTION */}
+            {/* OFFICE SECTION - UPDATED ADDRESS */}
             <div>
-              <p className="text-[10px] tracking-[0.3em] uppercase text-black/40 mb-2">Office</p>
-              <p className="text-lg font-medium text-black leading-snug">
-                Above Canara Bank 1,<br />
-                1st Main 1st Cross, Atmananda Colony,<br />
-                Sultanpalya, Bengaluru, Karnataka 560032.
-              </p>
+              <p className="text-[10px] tracking-[0.3em] uppercase text-black/40 mb-2">Corporate Office</p>
+              <address className="not-italic text-lg font-medium text-black leading-snug">
+                Number 125, Raj Tower, 3rd Floor,<br />
+                MM Road, Frazer Town,<br />
+                Bangalore 560005.
+              </address>
+              <a 
+                href="https://maps.app.goo.gl/YcLgMhc1fcqojedZ8" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-block mt-4 text-[10px] tracking-widest uppercase font-bold border-b border-[#B38728] pb-1 hover:text-[#B38728] transition-colors"
+              >
+                Get Directions
+              </a>
             </div>
           </div>
         </motion.div>
@@ -210,8 +221,6 @@ export default function ContactPage() {
           </form>
         </motion.div>
       </div>
-
-     
     </main>
   );
 }

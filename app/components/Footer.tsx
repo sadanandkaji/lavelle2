@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { MapPin, Mail, Phone } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -34,29 +35,52 @@ export default function Footer() {
           <div className="md:col-span-3 space-y-6">
             <h4 className="text-[11px] tracking-[0.3em] uppercase font-black text-stone-900">Explore</h4>
             <ul className="space-y-4">
-              <li><Link href="/" className="text-stone-500 hover:text-black text-sm transition transition-all duration-300">Home</Link></li>
-              <li><Link href="/gallery" className="text-stone-500 hover:text-black text-sm transition transition-all duration-300">Gallery</Link></li>
-              <li><Link href="/contact" className="text-stone-500 hover:text-black text-sm transition transition-all duration-300">Contact</Link></li>
+              <li><Link href="/" className="text-stone-500 hover:text-black text-sm transition-all duration-300">Home</Link></li>
+              <li><Link href="/about" className="text-stone-500 hover:text-black text-sm transition-all duration-300">About</Link></li>
+              <li><Link href="/contact" className="text-stone-500 hover:text-black text-sm transition-all duration-300">Contact</Link></li>
             </ul>
           </div>
 
           {/* Contact Section */}
           <div className="md:col-span-4 space-y-6">
             <h4 className="text-[11px] tracking-[0.3em] uppercase font-black text-stone-900">Contact</h4>
-            <div className="space-y-4 text-sm text-stone-500 font-light leading-relaxed">
-              <p>
-                Above Canara Bank 1,<br />
-                1st Main 1st Cross, Atmananda Colony,<br />
-                Sultanpalya, Bengaluru, Karnataka 560032.
-              </p>
-              <div className="space-y-1">
-                <p className="block hover:text-black transition-colors">
-                  <span className="text-stone-400 mr-2">E:</span> support@Lavelleventure.com
-                </p>
-                <p className="block hover:text-black transition-colors">
-                  <span className="text-stone-400 mr-2">P:</span> +91 91875 69958
-                </p>
+            <div className="space-y-6 text-sm text-stone-500 font-light leading-relaxed">
+              
+              {/* Address with Map Link */}
+              <div className="flex gap-4">
+                <MapPin className="w-5 h-5 text-[#B38728] shrink-0" strokeWidth={1.5} />
+                <div className="flex flex-col">
+                  <p>Number 125, Raj Tower, 3rd Floor,</p>
+                  <a 
+                    href="https://maps.app.goo.gl/YcLgMhc1fcqojedZ8" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="hover:text-black transition-colors underline underline-offset-4 decoration-stone-200"
+                  >
+                    MM Road, Frazer Town,
+                  </a>
+                  <p>Bangalore 560005.</p>
+                </div>
               </div>
+
+              <div className="space-y-4">
+                {/* Email */}
+                <div className="flex items-center gap-4">
+                  <Mail className="w-5 h-5 text-[#B38728] shrink-0" strokeWidth={1.5} />
+                  <a href="mailto:lavelleventure@gmail.com" className="hover:text-black transition-colors">
+                    lavelleventure@gmail.com
+                  </a>
+                </div>
+
+                {/* Phone */}
+                <div className="flex items-center gap-4">
+                  <Phone className="w-5 h-5 text-[#B38728] shrink-0" strokeWidth={1.5} />
+                  <a href="tel:+919187569958" className="hover:text-black transition-colors">
+                    +91 91875 69958
+                  </a>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
