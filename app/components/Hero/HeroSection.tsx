@@ -1,114 +1,75 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
-
+import { useRef } from "react";
 import HeroCards from "./HeroCards";
 import HeroIntro from "./HeroIntro";
 import HeroGoldText from "./HeroGoldText";
-import HeroFinalContent from "./HeroFinalContent";
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function HeroSection() {
-  const [mounted, setMounted] = useState(false);
-
-  const heroRef = useRef<HTMLDivElement | null>(null);
-  const mediaInnerRef = useRef<HTMLDivElement | null>(null);
-  const textRef = useRef<HTMLDivElement | null>(null);
-  const goldTextRef = useRef<HTMLDivElement | null>(null);
-  const contentRef = useRef<HTMLDivElement | null>(null);
-  const goldBgRef = useRef<HTMLDivElement | null>(null);
-
   const gardenCardRef = useRef<HTMLDivElement | null>(null);
   const sportsCardRef = useRef<HTMLDivElement | null>(null);
   const poolCardRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useGSAP(
-    () => {
-      if (!mounted || !heroRef.current) return;
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: "top top",
-          // TIGHTENED: 400% means much less thumb-swiping to get through the content
-          end: "+=500%", 
-          scrub: 1, // Snappy response: the animation stays glued to the finger
-          pin: true,
-          anticipatePin: 1,
-        },
-      });
-
-      // --- PHASE 1: Quick Video Collapse ---
-      tl.to(mediaInnerRef.current, { clipPath: "circle(0% at 50% 50%)", ease: "none" }, 0)
-        .to(goldBgRef.current, { opacity: 0.4, scale: 1.05, ease: "none" }, 0)
-        .to(textRef.current, { opacity: 0, y: -30, filter: "blur(10px)", ease: "none" }, 0);
-
-      // --- PHASE 2: Fast Card Transitions ---
-      const cardRefs = [gardenCardRef, sportsCardRef, poolCardRef];
-      
-      cardRefs.forEach((ref, i) => {
-        if (!ref.current) return;
-        
-        // Entrance & Exit happen closer together to minimize "dead" scrolling
-        tl.fromTo(ref.current,
-          { y: "100%", opacity: 0 },
-          { y: "0%", opacity: 1, duration: 1, ease: "power2.out" }
-        )
-        // Short pause (dwell) on the card
-        .to({}, { duration: 0.5 }) 
-        // Exit
-        .to(ref.current, {
-          y: "-100%",
-          opacity: 0,
-          filter: "blur(10px)",
-          duration: 0.8,
-          ease: "power2.in"
-        });
-      });
-
-      // --- PHASE 3: Final Reveal ---
-      tl.to(goldBgRef.current, { opacity: 0.8, duration: 0.5 })
-        .fromTo(goldTextRef.current,
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 1 }
-        )
-        .to(goldTextRef.current, { opacity: 0, filter: "blur(15px)", duration: 0.8 }, "+=0.5")
-        .fromTo(contentRef.current,
-          { y: "50vh", opacity: 0 },
-          { y: "0vh", opacity: 1, duration: 1.2, ease: "power3.out" }
-        );
-    },
-    { dependencies: [mounted], scope: heroRef }
-  );
-
-  if (!mounted) return null;
+  const goldTextRef = useRef<HTMLDivElement | null>(null);
+  const goldBgRef = useRef<HTMLDivElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
   return (
-    <section ref={heroRef} className="relative h-screen w-full overflow-hidden bg-black">
-      <div
-        ref={goldBgRef}
-        className="absolute inset-0 z-0 opacity-0 bg-cover bg-center"
-        style={{ backgroundImage: `url("/images/goldthemeceling.png")` }}
-      />
-      <div className="absolute inset-0 z-30 pointer-events-none">
-        <div ref={mediaInnerRef} className="absolute inset-0 bg-black" style={{ clipPath: "circle(150% at 50% 50%)" }}>
-          <video autoPlay muted loop playsInline preload="auto" poster="/images/goldthemeceling.png" className="w-full h-full object-cover">
-            <source src="/videos/hero.mp4" type="video/mp4" />
-          </video>
+    <section className="w-full bg-white">
+      
+      {/* VIDEO SECTION */}
+      <div className="relative h-screen w-full overflow-hidden">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover"
+        >
+          <source src="/videos/lavellefirstscene1.mp4" type="video/mp4" />
+        </video>
+
+        {/* Intro Text Over Video */}
+        <div className="absolute inset-0 flex items-center justify-center text-white text-center px-6 bg-black/10">
+          <HeroIntro />
         </div>
       </div>
-      <HeroCards gardenRef={gardenCardRef} sportsRef={sportsCardRef} poolRef={poolCardRef} />
-      <HeroIntro textRef={textRef} />
-      <HeroGoldText goldTextRef={goldTextRef} />
-      <HeroFinalContent contentRef={contentRef} />
+
+      {/* --- SPACES HEADER --- */}
+      {/* Reduced pt-32 to pt-20 and pb-8 to pb-0 to eliminate the gap before cards */}
+      <div className="bg-[#F6F5F2] pt-20 pb-0 flex flex-col items-center">
+        {/* Decorative Dark Gold Line */}
+        <div className="w-[1.5px] h-20 bg-gradient-to-b from-transparent via-[#B38728] to-[#B38728] mb-8" />
+        
+        <div className="text-center space-y-2">
+          <h2 className="text-[#B38728] text-xs md:text-sm tracking-[1em] uppercase font-bold pl-[1em]">
+            Spaces
+          </h2>
+          <p className="text-neutral-400 font-serif italic text-lg md:text-xl">
+            A Curation of Environments
+          </p>
+        </div>
+      </div>
+
+      {/* HERO CARDS SECTION */}
+      {/* Removed relative wrapper and pb-24 to let the internal card padding handle flow */}
+      <HeroCards
+        gardenRef={gardenCardRef}
+        sportsRef={sportsCardRef}
+        poolRef={poolCardRef}
+      />
+
+      {/* GOLD SECTION */}
+      {/* Reduced vertical padding from py-32 to py-16 */}
+      <div className="py-16">
+        <HeroGoldText
+          goldTextRef={goldTextRef}
+          goldBgRef={goldBgRef}
+        />
+      </div>
+
+ 
+
     </section>
   );
 }

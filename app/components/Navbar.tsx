@@ -3,142 +3,212 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [expandedMobileItem, setExpandedMobileItem] = useState<string | null>(null);
   const pathname = usePathname();
+  const router = useRouter();
 
-  const isHomePage = pathname === "/";
+  // Updated logic: Check if current page is contact OR about
+  const isStaticWhitePage = pathname === "/contact" || pathname === "/about";
 
   useEffect(() => {
-    setMounted(true);
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const isLightText = mounted && isHomePage && !isScrolled;
+  // Determine theme colors based on scroll OR specific static pages
+  const useDarkTheme = isScrolled || isStaticWhitePage;
 
-  const navLinkStyle = `px-8 py-3 rounded-full text-[10px] tracking-[0.4em] uppercase font-black transition-all duration-700 flex items-center justify-center border`;
-  
-  const activeLinkTheme = isLightText 
-    ? "bg-white/10 backdrop-blur-md text-white border-white/20 hover:bg-white hover:text-black" 
-    : "bg-black/5 backdrop-blur-md text-black border-black/5 hover:bg-black hover:text-white";
+  const navigationData = [
+    { title: "Cottage", href: "/cottage" },
+    { title: "Kitchen Garden", subItems: ["Coconut & Areca Trees", "Fruit Orchards"] },
+    { title: "Statues", href: "/statues" },
+    { title: "Temple", subItems: ["64 Yogini Temple", "8 Mathruka", "Tripura Eshwari Peetam", "Sri Maha Meru Yantra"] },
+    { title: "Farm", subItems: ["Gokula Gau Shala"] },
+    { title: "Wedding Hall", href: "/wedding-hall" },
+    { title: "Food Court", href: "/food-court" },
+    { title: "Watch Tower", href: "/watch-tower" },
+    { title: "Lake", href: "/lake" },
+    { title: "Holistic Center", href: "/holistic-center" },
+    { title: "Theatre", href: "/theatre" },
+    { title: "Amenities", href: "/amenities" },
+    { title: "Birds Aviary", href: "/birds-aviary" },
+    { title: "Landscape Garden", href: "/landscape" },
+  ];
+
+  const activeSubItems = navigationData.find(item => item.title === hoveredItem)?.subItems;
+
+  const handleItemClick = (item: any) => {
+    if (item.subItems) {
+      setExpandedMobileItem(expandedMobileItem === item.title ? null : item.title);
+    } else if (item.href) {
+      setMobileMenuOpen(false);
+      router.push(item.href);
+    }
+  };
 
   return (
     <>
-      {/* 1. LOGO SECTION */}
-      <div className="fixed top-4 left-4 md:top-6 md:left-6 z-[110] pointer-events-none">
-        <Link 
-          href="/" 
-          className={`group flex items-center pointer-events-auto px-4 py-3 md:px-6 md:py-5 rounded-3xl transition-all duration-500
-            ${isLightText 
-              ? "bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl" 
-              : "bg-white/70 backdrop-blur-xl border border-black/5 shadow-lg"
-            }`}
-        >
-          <div className="relative w-12 h-12 md:w-16 md:h-16 transition-transform duration-500 group-hover:scale-105">
-            <img src="/images/iconlogo.png" alt="Icon" className="w-full h-full object-contain" />
-          </div>
-          <div className={`h-10 md:h-12 w-[1px] mx-4 md:mx-6 transition-all duration-500 ${isLightText ? "bg-white/30" : "bg-black/10"}`} />
-          <div className="flex flex-col -space-y-1 md:-space-y-2">
-            <img src="/images/lavelle.png" alt="Lavelle" className="h-6 md:h-9 w-auto object-contain" />
-            <img src="/images/ventures.png" alt="Ventures" className="h-6 md:h-9 w-auto object-contain opacity-80" />
-          </div>
-        </Link>
-      </div>
+      {/* --- MAIN NAVBAR --- */}
+      <motion.header
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 flex items-center px-6 md:px-12
+          ${useDarkTheme ? "h-14 bg-white shadow-sm" : "h-20 bg-transparent"}`}
+      >
+        <div className="max-w-[1800px] mx-auto w-full flex items-center justify-between">
+          <Link href="/" className="flex flex-col">
+            <span className={`text-xl font-serif font-black tracking-tighter transition-colors ${useDarkTheme ? "text-black" : "text-white"}`}>
+              LAVELLE
+            </span>
+          </Link>
 
-      {/* 2. NAVIGATION BAR */}
-      <div className="fixed top-0 right-0 left-0 z-[100] flex justify-end items-center h-24 md:h-28 px-4 md:px-12 pointer-events-none">
-        <nav 
-          className={`
-            transition-all duration-700 ease-in-out flex items-center pointer-events-auto gap-4
-            ${isScrolled 
-                ? "bg-white/40 backdrop-blur-2xl shadow-xl px-2 py-2 rounded-full border border-white/40" 
-                : "bg-transparent"
-            }
-          `}
-        >
-          {/* Desktop Links */}
-          <div className="hidden md:flex items-center gap-4">
-            {["Home", "Gallery", "Contact"].map((item) => (
-              <Link 
-                key={item}
-                href={item === "Home" ? "/" : `/${item.toLowerCase()}`} 
-                className={`${navLinkStyle} ${activeLinkTheme}`}
-              >
-                {item}
-              </Link>
-            ))}
-          </div>
+          <nav className="hidden md:flex items-center gap-8">
+            {["Home", "About", "Contact"].map((item) => {
+              const href = item === "Home" ? "/" : `/${item.toLowerCase()}`;
+              return (
+                <Link key={item} href={href} className="relative group">
+                  <span className={`text-[10px] tracking-[0.25em] uppercase font-bold transition-colors ${
+                    pathname === href 
+                      ? (useDarkTheme ? "text-black border-b border-black" : "text-white border-b border-white") 
+                      : (useDarkTheme ? "text-neutral-400 hover:text-black" : "text-white/60 hover:text-white")
+                  }`}>
+                    {item}
+                  </span>
+                </Link>
+              );
+            })}
+          </nav>
 
-          {/* FIXED SIZE Hamburger Button */}
           <button 
-            onClick={() => setMobileMenuOpen(true)} 
-            className={`md:hidden flex flex-col items-center justify-center w-14 h-14 rounded-full transition-all duration-500 border backdrop-blur-xl
-              ${isScrolled 
-                ? "text-black bg-white/20 border-black/10 shadow-lg" 
-                : "text-white bg-black/40 border-white/20 shadow-2xl"}`}
+            onClick={() => setMobileMenuOpen(true)}
+            className={`flex items-center gap-3 group transition-all ${useDarkTheme ? "text-black" : "text-white"}`}
           >
-            <div className="flex flex-col items-end gap-1.5">
-              <div className="w-6 h-[2px] bg-current rounded-full" />
-              <div className="w-4 h-[2px] bg-current rounded-full" />
+            <span className="text-[9px] tracking-[0.2em] uppercase font-bold hidden sm:block">Estate Map</span>
+            <div className={`w-8 h-8 rounded-full flex flex-col items-center justify-center gap-1 transition-colors ${useDarkTheme ? "bg-black" : "bg-white"}`}>
+              <div className={`w-3 h-[1px] ${useDarkTheme ? "bg-white" : "bg-black"}`} />
+              <div className={`w-3 h-[1px] ${useDarkTheme ? "bg-white" : "bg-black"}`} />
             </div>
           </button>
-        </nav>
-      </div>
+        </div>
+      </motion.header>
 
-      {/* MOBILE DRAWER */}
+      {/* --- SIDEBAR & FLYOUTS (Remains same as your provided code) --- */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
-            <motion.div
+            <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setMobileMenuOpen(false)}
-              className="fixed inset-0 z-[150] bg-black/30 backdrop-blur-md"
+              onClick={() => { setMobileMenuOpen(false); setHoveredItem(null); setExpandedMobileItem(null); }}
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[150]"
             />
-            
+
             <motion.div
               initial={{ x: "100%" }}
-              animate={{ x: "0%" }}
+              animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              transition={{ type: "spring", stiffness: 120, damping: 20 }}
-              className="fixed top-0 right-0 h-full w-[85%] max-w-sm z-[160] 
-                         bg-white/90 backdrop-blur-3xl border-l border-white/40 
-                         flex flex-col px-10 py-12 shadow-2xl"
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              className="fixed top-0 right-0 h-full w-[300px] md:w-[380px] bg-white z-[160] shadow-2xl flex flex-col"
             >
-              <div className="flex justify-between items-center mb-16">
-                <img src="/images/iconlogo.png" alt="Logo" className="w-14 h-14 object-contain" />
+              <div className="p-6 border-b border-white/10 flex justify-between items-center bg-[#111111]">
+                <span className="text-lg font-serif font-black tracking-tighter text-white uppercase">
+                  Eshwari Farms
+                </span>
                 <button 
-                  onClick={() => setMobileMenuOpen(false)} 
-                  className="text-black text-[10px] tracking-[0.4em] uppercase font-black border-b border-black/40 pb-1"
+                  onClick={() => { setMobileMenuOpen(false); setHoveredItem(null); setExpandedMobileItem(null); }}
+                  className="text-[10px] uppercase tracking-[0.2em] font-bold text-white/60 hover:text-white flex items-center gap-2"
                 >
-                  Close
+                  <span className="text-lg leading-none">×</span> Close
                 </button>
               </div>
 
-              <div className="flex-1 flex flex-col justify-center gap-5">
-                {["Home", "Gallery", "Contact"].map((item) => (
-                  <Link 
-                    key={item}
-                    href={item === "Home" ? "/" : `/${item.toLowerCase()}`} 
-                    onClick={() => setMobileMenuOpen(false)} 
-                    className="w-full py-7 bg-white/30 backdrop-blur-lg border border-black/5 
-                               text-black text-center text-xl tracking-[0.3em] uppercase font-black 
-                               rounded-2xl active:scale-95 transition-all duration-300"
-                  >
-                    {item}
-                  </Link>
+              <div className="flex-1 overflow-y-auto py-4 no-scrollbar">
+                {navigationData.map((item) => (
+                  <div key={item.title} className="flex flex-col border-b border-neutral-50 last:border-0">
+                    <div 
+                      onMouseEnter={() => setHoveredItem(item.title)}
+                      onClick={() => handleItemClick(item)}
+                      className="px-8 py-4 flex items-center justify-between group cursor-pointer hover:bg-[#F6F5F2] transition-all"
+                    >
+                      <span className={`text-[10px] md:text-[11px] font-bold tracking-[0.2em] uppercase transition-colors ${
+                        expandedMobileItem === item.title ? "text-[#B38728]" : "text-neutral-800 group-hover:text-[#B38728]"
+                      }`}>
+                        {item.title}
+                      </span>
+                      
+                      {item.subItems && (
+                        <motion.span 
+                          animate={{ rotate: expandedMobileItem === item.title ? 180 : 0 }}
+                          className="text-[10px] text-neutral-400 lg:hidden"
+                        >
+                          ▼
+                        </motion.span>
+                      )}
+                    </div>
+
+                    <AnimatePresence>
+                      {expandedMobileItem === item.title && item.subItems && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          className="overflow-hidden bg-[#F9F8F6] lg:hidden"
+                        >
+                          <div className="px-10 py-4 flex flex-col gap-4 border-l-2 border-[#B38728]/20 ml-8 my-2">
+                            {item.subItems.map((sub, idx) => (
+                              <Link 
+                                key={idx} 
+                                href={`/${sub.toLowerCase().replace(/ /g, '-')}`} 
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="text-[10px] tracking-widest text-neutral-500 hover:text-[#B38728] uppercase transition-colors"
+                              >
+                                {sub}
+                              </Link>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 ))}
               </div>
             </motion.div>
+
+            {/* --- DESKTOP ONLY FLYOUT --- */}
+            <AnimatePresence>
+              {hoveredItem && activeSubItems && (
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  className="fixed top-0 right-[380px] h-full w-[260px] bg-[#F6F5F2] z-[155] shadow-xl hidden lg:flex flex-col justify-center p-10 border-r border-neutral-200"
+                >
+                  <span className="text-[8px] tracking-[0.4em] text-[#B38728] font-bold uppercase mb-3">Discovery</span>
+                  <h3 className="text-xl font-serif italic text-neutral-900 mb-8">{hoveredItem}</h3>
+                  <div className="flex flex-col gap-5 relative">
+                    <div className="absolute left-0 top-0 w-[1px] h-full bg-neutral-200" />
+                    {activeSubItems.map((sub, idx) => (
+                      <Link 
+                        key={idx} 
+                        href={`/${sub.toLowerCase().replace(/ /g, '-')}`}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="pl-5 text-[11px] text-neutral-500 hover:text-black transition-colors block uppercase tracking-wider"
+                      >
+                        {sub}
+                      </Link>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </>
         )}
       </AnimatePresence>
