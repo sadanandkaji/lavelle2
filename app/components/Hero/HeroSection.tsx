@@ -12,7 +12,6 @@ export default function HeroSection() {
 
   const goldTextRef = useRef<HTMLDivElement | null>(null);
   const goldBgRef = useRef<HTMLDivElement | null>(null);
-  const contentRef = useRef<HTMLDivElement | null>(null);
 
   return (
     <section className="w-full bg-white">
@@ -24,9 +23,11 @@ export default function HeroSection() {
           muted
           loop
           playsInline
+          controls={false}
           className="w-full h-full object-cover"
         >
-          <source src="/videos/lavellefirstscene1.mp4" type="video/mp4" />
+          {/* 🔥 Load from backend streaming API */}
+          <source src="/api/render?file=lavellefirstscene1.mp4" type="video/mp4" />
         </video>
 
         {/* Intro Text Over Video */}
@@ -36,9 +37,7 @@ export default function HeroSection() {
       </div>
 
       {/* --- SPACES HEADER --- */}
-      {/* Reduced pt-32 to pt-20 and pb-8 to pb-0 to eliminate the gap before cards */}
       <div className="bg-[#F6F5F2] pt-20 pb-0 flex flex-col items-center">
-        {/* Decorative Dark Gold Line */}
         <div className="w-[1.5px] h-20 bg-gradient-to-b from-transparent via-[#B38728] to-[#B38728] mb-8" />
         
         <div className="text-center space-y-2">
@@ -51,8 +50,7 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* HERO CARDS SECTION */}
-      {/* Removed relative wrapper and pb-24 to let the internal card padding handle flow */}
+      {/* HERO CARDS */}
       <HeroCards
         gardenRef={gardenCardRef}
         sportsRef={sportsCardRef}
@@ -60,16 +58,12 @@ export default function HeroSection() {
       />
 
       {/* GOLD SECTION */}
-      {/* Reduced vertical padding from py-32 to py-16 */}
       <div className="py-16">
         <HeroGoldText
           goldTextRef={goldTextRef}
           goldBgRef={goldBgRef}
         />
       </div>
-
- 
-
     </section>
   );
 }

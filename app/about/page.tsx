@@ -5,204 +5,196 @@ import { useRef } from "react";
 
 export default function AboutPage() {
   const containerRef = useRef(null);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
+  const heroY = useTransform(scrollYProgress, [0, 0.5], [0, 200]);
+
   const stats = [
     { label: "Residencies Sold", value: "200+" },
     { label: "Acres Developed", value: "500+" },
-    { label: "Years of Expertise", value: "25+" },
+    { label: "Years of Expertise", value: "10+" },
     { label: "Satisfied Families", value: "1000+" },
   ];
 
   return (
-    <main ref={containerRef} className="bg-[#FBFBFA] text-neutral-900 min-h-screen">
-      
-      {/* --- LUXURY HERO SECTION --- */}
-      <section className="relative h-[85vh] flex items-center justify-center overflow-hidden">
-        <motion.div 
-          style={{ y: useTransform(scrollYProgress, [0, 0.5], [0, 200]) }}
+    <main
+      ref={containerRef}
+      className="bg-[#FBFBFA] text-neutral-900 min-h-screen"
+    >
+      {/* ================= HERO SECTION ================= */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white px-6">
+        {/* Background Typography */}
+        <motion.div
+          style={{ y: heroY }}
           className="absolute inset-0 z-0 flex items-center justify-center opacity-[0.03] pointer-events-none select-none"
         >
-          <h1 className="text-[25vw] font-serif italic whitespace-nowrap">Lavelle</h1>
+          <h1 className="text-[30vw] md:text-[18vw] font-serif italic whitespace-nowrap">
+            Lavelle
+          </h1>
         </motion.div>
 
-        <div className="relative z-10 text-center space-y-6 px-6">
+        <div className="relative z-10 max-w-4xl mx-auto text-center space-y-6 md:space-y-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
+            transition={{ duration: 1 }}
           >
-            <span className="text-[10px] tracking-[0.8em] text-[#B38728] uppercase font-bold block mb-4">
-              Est. 2005
+            <span className="text-[9px] md:text-[10px] tracking-[0.6em] md:tracking-[0.8em] text-[#B38728] uppercase font-bold block mb-4">
+              Est. 2019
             </span>
-            <h2 className="text-6xl md:text-9xl font-serif italic text-neutral-900 leading-none">
-              The Art of <br />
-              <span className="text-neutral-300">Legacy</span>
+
+            <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-serif italic leading-tight">
+             Lavelle Venture
             </h2>
           </motion.div>
-          <motion.div 
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 1 }}
+            className="text-base sm:text-lg md:text-xl text-neutral-600 font-light leading-relaxed max-w-3xl mx-auto"
+          >
+            Lavelle Ventures is a Bangalore-based real estate development firm
+            committed to creating high-value residential communities rooted in
+            sustainability, spiritual harmony, and long-term investment growth.
+            We focus on premium plotted developments and thoughtfully planned
+            living spaces that blend modern infrastructure with timeless values.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6, duration: 1 }}
+            className="pt-6 border-t border-stone-200 max-w-md mx-auto"
+          >
+            <p className="text-sm text-neutral-500 leading-relaxed">
+              <span className="uppercase tracking-[0.3em] text-[#B38728] font-bold text-[9px] block mb-3">
+                Corporate Office
+              </span>
+              Number 125, Raj Tower, 3rd Floor,
+              <br />
+              MM Road, Frazer Town,
+              <br />
+              Bangalore – 560005.
+            </p>
+          </motion.div>
+
+          <motion.div
             initial={{ width: 0 }}
             animate={{ width: "80px" }}
-            transition={{ delay: 0.5, duration: 1 }}
-            className="h-[1px] bg-[#B38728] mx-auto"
+            transition={{ delay: 0.9, duration: 1 }}
+            className="h-[1px] bg-[#B38728] mx-auto mt-6"
           />
-        </div>
-        
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
-          <span className="text-[8px] tracking-[0.3em] uppercase text-neutral-400 font-bold">Scroll</span>
-          <div className="w-[1px] h-12 bg-gradient-to-b from-[#B38728] to-transparent" />
         </div>
       </section>
 
-      {/* --- LEADERSHIP SECTION (Two Owners) --- */}
-      <section className="max-w-7xl mx-auto px-6 py-32 md:py-48">
-        <div className="text-center mb-24 space-y-4">
-          <motion.h2 
+      {/* ================= LEADERSHIP SECTION ================= */}
+      <section className="max-w-7xl mx-auto px-6 py-20 md:py-40">
+        <div className="text-center mb-16 md:mb-24 space-y-4">
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-[10px] tracking-[0.5em] text-[#B38728] font-bold uppercase"
+            className="text-[9px] md:text-[10px] tracking-[0.4em] md:tracking-[0.5em] text-[#B38728] font-bold uppercase"
           >
             Our Founders
           </motion.h2>
-          <h3 className="text-4xl md:text-6xl font-serif italic">Visionary Leadership</h3>
+
+          <h3 className="text-3xl md:text-5xl font-serif italic">
+            Visionary Leadership
+          </h3>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-24 items-start">
-          
-          {/* Owner 1 - HALF SIZE / COMPACT */}
-          <div className="space-y-10 flex flex-col items-center md:items-start">
-            <div className="relative group w-full max-w-[340px]"> {/* Contrains width to roughly half of the column */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1 }}
-                viewport={{ once: true }}
-                className="relative aspect-[3/4] overflow-hidden z-10 shadow-xl bg-neutral-100"
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-start">
+          {/* Founder 1 */}
+          <div className="space-y-8 flex flex-col items-center md:items-start">
+            <div className="relative group w-full max-w-sm md:max-w-[420px] [perspective:1200px]">
+              <motion.div
+                whileHover={{ rotateY: 8, rotateX: 6, scale: 1.03 }}
+                transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                className="relative aspect-[4/5] overflow-hidden shadow-2xl bg-neutral-100 rounded-xl transform-gpu"
+                style={{ transformStyle: "preserve-3d" }}
               >
-                <img 
-                  src="/images/owner.jpeg" 
-                  alt="Founder" 
-                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 ease-in-out scale-105 group-hover:scale-100"
+                <img
+                  src="/images/owner.jpeg"
+                  alt="Founder"
+                  className="w-full h-full object-cover"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
               </motion.div>
-              <div className="absolute -bottom-4 -right-4 w-full h-full border border-stone-200 z-0" />
             </div>
-            
-            <div className="space-y-4 max-w-[400px]">
-              <h4 className="text-2xl font-serif">Founder</h4>
-              <p className="text-neutral-500 font-light leading-relaxed text-lg italic">
-                "We don't just develop land; we curate environments where the soul can finally breathe."
+
+            <div className="space-y-4 text-center md:text-left max-w-sm">
+              <h4 className="text-xl md:text-2xl font-serif">
+                Mr. Mehboob Pasha
+              </h4>
+              <p className="text-neutral-500 font-light italic">
+                "We don't just develop land; we curate environments where the
+                soul can finally breathe."
               </p>
-              <p className="text-stone-500 font-light leading-relaxed text-sm">
-                With over two decades in real estate, he specializes in identifying land with profound spiritual significance, ensuring every project at Lavelle remains a sanctuary.
+              <p className="text-stone-500 text-sm leading-relaxed">
+                With extensive real estate expertise, he specializes in
+                identifying land with strong investment potential and
+                sustainable value.
               </p>
             </div>
           </div>
 
-          {/* Owner 2 - FULL SIZE / PROMINENT */}
-          <div className="space-y-10 md:mt-32">
-            <div className="relative group">
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.2 }}
-                viewport={{ once: true }}
-                className="relative aspect-[4/5] overflow-hidden z-10 shadow-2xl bg-neutral-100"
+          {/* Founder 2 */}
+          <div className="space-y-8 flex flex-col items-center md:items-start md:mt-20">
+            <div className="relative group w-full max-w-sm md:max-w-[420px] [perspective:1200px]">
+              <motion.div
+                whileHover={{ rotateY: -8, rotateX: 6, scale: 1.03 }}
+                transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                className="relative aspect-[4/5] overflow-hidden shadow-2xl bg-neutral-100 rounded-xl transform-gpu"
+                style={{ transformStyle: "preserve-3d" }}
               >
-                <img 
-                  src="/images/owner2.jpeg" 
-                  alt="Co-Founder" 
-                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 ease-in-out scale-105 group-hover:scale-100"
+                <img
+                  src="/images/owner2.jpeg"
+                  alt="Co-Founder"
+                  className="w-full h-full object-cover"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
               </motion.div>
-              <div className="absolute -bottom-4 -left-4 w-full h-full border border-stone-200 z-0" />
             </div>
-            <div className="space-y-4">
-              <h4 className="text-2xl font-serif">Founder</h4>
-              <p className="text-neutral-500 font-light leading-relaxed text-lg italic">
+
+            <div className="space-y-4 text-center md:text-left max-w-sm">
+              <h4 className="text-xl md:text-2xl font-serif">
+                Dr. Anjum Azhar
+              </h4>
+              <p className="text-neutral-500 font-light italic">
                 "Architecture must serve as a bridge between ancient wisdom and modern precision."
               </p>
-              <p className="text-stone-500 font-light leading-relaxed text-sm">
-                A master of strategic development and urban planning, she ensures that the structural integrity of our projects meets the highest global standards of luxury.
+              <p className="text-stone-500 text-sm leading-relaxed">
+                He ensures each development maintains structural excellence,
+                luxury standards, and long-term urban value.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Unified Stats Bar */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-12 gap-x-8 pt-24 mt-24 border-t border-stone-100 text-center">
+        {/* ================= STATS ================= */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-12 pt-16 md:pt-24 mt-16 border-t border-stone-100 text-center">
           {stats.map((stat, i) => (
-            <motion.div 
+            <motion.div
               key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
               viewport={{ once: true }}
             >
-              <p className="text-4xl font-serif text-neutral-900 mb-1">{stat.value}</p>
-              <p className="text-[9px] tracking-[0.3em] uppercase text-[#B38728] font-bold">{stat.label}</p>
+              <p className="text-2xl md:text-4xl font-serif mb-2">
+                {stat.value}
+              </p>
+              <p className="text-[8px] md:text-[9px] tracking-[0.3em] uppercase text-[#B38728] font-bold">
+                {stat.label}
+              </p>
             </motion.div>
           ))}
-        </div>
-      </section>
-
-      {/* --- PHILOSOPHY SECTION --- */}
-      <section className="relative py-40 overflow-hidden bg-white">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-stone-200 to-transparent" />
-        <div className="max-w-5xl mx-auto px-6 text-center">
-          <motion.div
-             initial={{ opacity: 0, scale: 0.9 }}
-             whileInView={{ opacity: 1, scale: 1 }}
-             transition={{ duration: 1 }}
-          >
-            <img src="/images/iconlogo.png" alt="Logo" className="w-12 h-12 mx-auto mb-12 opacity-40" />
-            <h2 className="text-3xl md:text-5xl font-serif italic text-neutral-800 leading-[1.4] mb-12">
-              "True luxury is not about possession; it is about the silence and the sanctity of the earth we inhabit."
-            </h2>
-            <div className="flex items-center justify-center gap-4">
-                <div className="h-px w-12 bg-stone-200" />
-                <p className="text-[10px] tracking-[0.5em] uppercase font-bold text-[#B38728]">The Lavelle Way</p>
-                <div className="h-px w-12 bg-stone-200" />
-            </div>
-          </motion.div>
-        </div>
-        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-stone-200 to-transparent" />
-      </section>
-
-      {/* --- VISION & MISSION --- */}
-      <section className="max-w-7xl mx-auto px-6 py-32 md:py-48">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-32 items-center">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="space-y-8"
-          >
-            <div className="inline-block px-4 py-1 border border-stone-200 text-[9px] tracking-[0.4em] uppercase font-bold text-stone-400">
-              Purpose
-            </div>
-            <h4 className="text-4xl font-serif italic text-neutral-900">The Vision</h4>
-            <p className="text-neutral-500 font-light leading-relaxed text-xl">
-              To be the premier developer of conscious living spaces in India, where every project serves as a sanctuary for the mind, body, and soul.
-            </p>
-          </motion.div>
-
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="bg-[#F6F5F2] p-12 md:p-20 space-y-8"
-          >
-            <h4 className="text-4xl font-serif italic text-neutral-900">The Mission</h4>
-            <p className="text-neutral-500 font-light leading-relaxed text-xl">
-              To blend ancient Siddha wisdom with modern real estate excellence, delivering high-value investments that offer profound peace and ecological sustainability.
-            </p>
-           
-          </motion.div>
         </div>
       </section>
     </main>

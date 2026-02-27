@@ -57,7 +57,7 @@ export default function Navbar() {
         className={`fixed top-0 left-0 w-full z-[100] flex items-center px-6 md:px-16 transition-all duration-700 border-b
           ${(isScrolled || isSolidPage)
             ? "h-20 bg-white shadow-[0_10px_40px_rgba(0,0,0,0.04)] border-black/5"
-            : "h-28 bg-transparent border-white/100"
+            : "h-20 bg-transparent border-white/100"
           }`}
       >
         <div className="max-w-[1800px] mx-auto w-full flex items-center justify-between">
@@ -71,7 +71,7 @@ export default function Navbar() {
               LAVELLE
             </motion.span>
             <span className={`text-[8px] tracking-[0.6em] uppercase font-bold mt-1 transition-colors duration-500 ${(isScrolled || isSolidPage) ? "text-[#B38728]" : "text-[#B38728]/90"}`}>
-              Ventures
+              Venture
             </span>
             <motion.div className="absolute -bottom-2 left-0 w-0 h-[1px] bg-[#B38728] group-hover:w-full transition-all duration-500" />
           </Link>
