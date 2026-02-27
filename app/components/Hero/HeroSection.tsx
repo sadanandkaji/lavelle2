@@ -18,17 +18,23 @@ export default function HeroSection() {
       
       {/* VIDEO SECTION */}
       <div className="relative h-screen w-full overflow-hidden">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          controls={false}
-          className="w-full h-full object-cover"
-        >
-          {/* 🔥 Load from backend streaming API */}
-          <source src="/api/render?file=lavellefirstscene1.mp4" type="video/mp4" />
-        </video>
+       <video
+  autoPlay
+  muted
+  loop
+  playsInline
+  preload="metadata"
+  className="w-full h-full object-cover"
+>
+  <source
+    src={
+      typeof window !== "undefined" && window.innerWidth < 768
+        ? "/videos/lavelle-mobile.mp4"
+        : "/videos/lavellefirstscene1.mp4"
+    }
+    type="video/mp4"
+  />
+</video>
 
         {/* Intro Text Over Video */}
         <div className="absolute inset-0 flex items-center justify-center text-white text-center px-6 bg-black/10">
