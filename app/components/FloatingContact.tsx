@@ -7,17 +7,17 @@ export default function FloatingContact() {
   const contactLinks = [
     {
       icon: <Phone size={20} />,
-      href: "tel:+911234567890",
+      href: "tel:+919187569958",
     
     },
     {
       icon: <MessageCircle size={20} />,
-      href: "https://wa.me/911234567890",
+      href: "https://wa.me/919187569958",
      
     },
     {
       icon: <Mail size={20} />,
-      href: "mailto:info@lavelle.com",
+      href: "mailto:lavelleventure@gmail.com",
     
     },
   ];
