@@ -29,8 +29,8 @@ export default function HeroSection() {
   <source
     src={
       typeof window !== "undefined" && window.innerWidth < 768
-        ? "/videos/lavellefirstscene1.mp4"
-        : "/videos/lavellefirstscene1.mp4"
+        ? "/videos/lavellefirstscene.mp4"
+        : "/videos/lavellefirstscene.mp4"
     }
     type="video/mp4"
   />
